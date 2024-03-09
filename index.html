@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Proposal</title>
+<style>
+    body {
+        background-color: black;
+        color: white;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    #proposal {
+        text-align: center;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 18px;
+        margin: 20px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+    }
+    #yes {
+        background-color: green;
+    }
+    #no {
+        background-color: red;
+        position: absolute; /* Make the button position absolute for movement */
+    }
+    .heart {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: rise 5s linear infinite;
+    }
+    @keyframes rise {
+        0% { bottom: 0; opacity: 0; }
+        50% { opacity: 1; }
+        100% { bottom: 100%; opacity: 0; }
+    }
+</style>
+</head>
+<body>
+<div id="proposal">
+    <h1>Will you marry me?</h1>
+    <button id="yes">Yes</button>
+    <button id="no">No</button>
+</div>
+
+<script>
+    const noButton = document.getElementById('no');
+    const proposalDiv = document.getElementById('proposal');
+
+    // Function to move the 'No' button randomly
+    function moveButton(event) {
+        const maxX = window.innerWidth - noButton.offsetWidth;
+        const maxY = window.innerHeight - noButton.offsetHeight;
+        const newX = Math.floor(Math.random() * maxX);
+        const newY = Math.floor(Math.random() * maxY);
+        noButton.style.left = `${newX}px`;
+        noButton.style.top = `${newY}px`;
+        event.stopPropagation(); // Prevent any further propagation of the event
+    }
+
+    // Make the 'No' button unclickable
+    noButton.addEventListener('click', function(event) {
+        event.preventDefault();
+    });
+
+    // Event listener to trigger the moveButton function on mouseover
+    noButton.addEventListener('mouseover', moveButton);
+
+    // Function to create a heart element
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '&hearts;';
+        document.body.appendChild(heart);
+        setTimeout(() => {
+            heart.remove();
+        }, 5000); // Remove the heart element after 5 seconds
+    }
+
+    // Event listener to trigger the createHeart function when the 'Yes' button is clicked
+    document.getElementById('yes').addEventListener('click', function() {
+        // Call createHeart function multiple times to generate multiple hearts
+        for (let i = 0; i < 10; i++) {
+            createHeart();
+        }
+        // Optional: Display a message after clicking "Yes"
+        proposalDiv.innerHTML = '<h1>💖 Thank you! 💖</h1>';
+    });
+</script>
+</body>
+</html>
