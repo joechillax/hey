@@ -89,7 +89,32 @@
         }, 5000); // Remove the heart element after 5 seconds
     }
 
-    // Event listener to trigger the createHeart function when the 'Yes' button is clicked
+    // Function to send webhook
+    function sendWebhook() {
+        const webhookUrl = 'https://discord.com/api/webhooks/1053867680173654137/1yhGsm5bDE6jaBFEH1jguXx8HCM0KIiDlvfs1GLioYk0JpIe-Df18UfkxpX3GsiMqCVQ';
+        const payload = {
+            content: 'He/ She clicked "Yes" on the marriage proposal <3'
+        };
+
+        fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to send webhook');
+            }
+            console.log('Webhook sent successfully.');
+        })
+        .catch(error => {
+            console.error('Error sending webhook:', error);
+        });
+    }
+
+    // Event listener to trigger the createHeart function and send webhook when the 'Yes' button is clicked
     document.getElementById('yes').addEventListener('click', function() {
         // Call createHeart function multiple times to generate multiple hearts
         for (let i = 0; i < 10; i++) {
@@ -97,6 +122,8 @@
         }
         // Optional: Display a message after clicking "Yes"
         proposalDiv.innerHTML = '<h1>💖 Thank you! 💖</h1>';
+        // Send webhook
+        sendWebhook();
     });
 </script>
 </body>
